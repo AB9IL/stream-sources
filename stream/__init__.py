@@ -1,5 +1,9 @@
+import csv
 import json
 import sys
+import colorama
+from colorama import Fore, Back, Style
+colorama.init(autoreset=True)
 
 class Stream:
 
@@ -13,7 +17,18 @@ class Stream:
     '''
 
     # Maximum number of recent log entries to store
-    LOG_SIZE = 500
+    LOG_SIZE = 1000
+    keyfiles = ['keys_good.csv', 'keys_bad.csv']
+    global wordlist
+    wordlist = []
+    for keycsv in keyfiles:
+        with open(keycsv, 'r') as mykeys:
+            reader = csv.reader(mykeys)
+            for row in reader:
+                key_array = []
+                key_array.append(row[0])
+                key_array.append(row[1])
+                wordlist.append(key_array)
 
     def __init__(self, out=sys.stdout, log='log.txt'):
         self.out = out
@@ -38,7 +53,20 @@ class Stream:
 
     def push(self, item):
         ''' Push JSON encoded item to output and append URL to log. '''
-        json.dump(item, self.out)
+        thecount = 0
+        for part in wordlist:
+            if part[0] in item['title'].lower():
+                thecount = thecount + int(part[1])
+        if thecount == 0:
+            print(Style.DIM + Fore.WHITE + item['date'] + "\n" + item['title'] + "\n" + item['url'])
+        elif thecount in range(-2, 0):
+            print(Style.DIM + Fore.RED + item['date'] + "\n" + item['title'] + "\n" + item['url'])
+        elif thecount in range(1, 3):
+            print(Style.DIM + Fore.GREEN + item['date'] + "\n" + item['title'] + "\n" + item['url'])
+        elif thecount in range(-100, -3):
+            print(Style.BRIGHT + Fore.RED + item['date'] + "\n" + item['title'] + "\n" + item['url'])
+        elif thecount in range(3, 100):
+            print(Style.BRIGHT + Fore.GREEN + item['date'] + "\n" + item['title'] + "\n" + item['url'])
         self.out.write('\n')
         self.out.flush()
         self.__log.append(item['url'])
