@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# run the rss stream parser
+
+echo "Stand by for the RSS stream..."
+cd stream-sources
+python3 ./main.py
