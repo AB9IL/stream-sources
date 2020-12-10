@@ -49,6 +49,23 @@ def main():
     firehose.add_source('biospace.products', stream=stream)
     # Add BleepingComputer
     # firehose.add_source('bleepingcomputer')
+    # Add Businesswire
+    stream = firehose.add_source('businessswire.airtravel').stream
+    firehose.add_source('businessswire.altenergy', stream=stream)
+    firehose.add_source('businessswire.biotech', stream=stream)
+    firehose.add_source('businessswire.clinicaltrials', stream=stream)
+    firehose.add_source('businessswire.diabetes', stream=stream)
+    firehose.add_source('businessswire.diseases', stream=stream)
+    firehose.add_source('businessswire.fda', stream=stream)
+    firehose.add_source('businessswire.health', stream=stream)
+    firehose.add_source('businessswire.maritime', stream=stream)
+    firehose.add_source('businessswire.nanotech', stream=stream)
+    firehose.add_source('businessswire.oilgas', stream=stream)
+    firehose.add_source('businessswire.oncology', stream=stream)
+    firehose.add_source('businessswire.onlineretail', stream=stream)
+    firehose.add_source('businessswire.pharmaceuticeuticals', stream=stream)
+    firehose.add_source('businessswire.semiconductors', stream=stream)
+    firehose.add_source('businessswire.software', stream=stream)
     # Add BuzzFeed News
     # stream = firehose.add_source('buzzfeednews.politics').stream
     # firehose.add_source('buzzfeednews.technology', stream=stream)
