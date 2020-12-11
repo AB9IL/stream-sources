@@ -1,10 +1,14 @@
 import importlib
+from multiprocessing import cpu_count as CPUcount
+from multiprocessing.dummy import Lock as ThreadLock
+from multiprocessing.dummy import Pool as ThreadPool
 import os
 import sys
 import time
-
 from stream import Stream
 
+one_cpu = CPUcount()
+two_cpu = 2 * one_cpu
 
 class Firehose:
 
@@ -37,12 +41,17 @@ class Firehose:
         return source
 
     def update(self):
+        pool = ThreadPool(two_cpu)
+        lock = ThreadLock()
         ''' Update all sources. '''
         for source in self._sources:
-            try:
-                source.update()
-            except Exception as e:
-                continue
+            with lock:
+                try:
+                    pool.apply_async(source.update())
+                except Exception as e:
+                    continue
+        pool.close()
+        pool.join()
 
     def start(self):
         ''' Start the firehose. '''
