@@ -50,7 +50,7 @@ def main():
     # Add BleepingComputer
     # firehose.add_source('bleepingcomputer')
     # Add Businesswire
-    stream = firehose.add_source('businessswire.airtravel').stream
+    stream = firehose.add_source('businesswire.airtravel').stream
     firehose.add_source('businesswire.altenergy', stream=stream)
     firehose.add_source('businesswire.biotech', stream=stream)
     firehose.add_source('businesswire.clinicaltrials', stream=stream)
